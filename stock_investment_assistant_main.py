@@ -6,6 +6,9 @@
 
 import sys
 import os
+# 设置系统编码为UTF-8
+sys.stdout.reconfigure(encoding='utf-8')
+sys.stderr.reconfigure(encoding='utf-8')
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from stock_investment_assistant import DIKWStockAssistant
