@@ -26,12 +26,15 @@ import os
 sys.stdout.reconfigure(encoding='utf-8')
 sys.stderr.reconfigure(encoding='utf-8')
 
+# 添加src目录到路径
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 # 导入新增模块
-from technical_indicators import TechnicalIndicators
-from advanced_analyzer import SectorAnalyzer, RiskAnalyzer, CapitalFlowAnalyzer
-from portfolio_optimizer import PortfolioOptimizer
-from risk_timing import DynamicRiskController, TimingStrategy
-from report_analyzer import ReportAnalyzer
+from analysis.technical_indicators import TechnicalIndicators
+from analysis.advanced_analyzer import SectorAnalyzer, RiskAnalyzer, CapitalFlowAnalyzer
+from analysis.portfolio_optimizer import PortfolioOptimizer
+from analysis.risk_timing import DynamicRiskController, TimingStrategy
+from analysis.report_analyzer import ReportAnalyzer
 
 # ==================== 配置部分 ====================
 
