@@ -2,10 +2,15 @@
 # 基础依赖
 requests>=2.31.0
 aiohttp>=3.9.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Web界面依赖
+fpdf>=1.7.2
+Flask>=2.0.0
+Flask-Cors>=3.0.10
 
 # 可选依赖 - 用于高级分析
-# pandas>=2.0.0
-# numpy>=1.24.0
 # matplotlib>=3.7.0  # 用于图表生成
 
 # 专业数据源
@@ -15,4 +20,4 @@ aiohttp>=3.9.0
 # openai>=1.0.0  # 需要API key，取消注释启用
 
 # 安装命令: pip install -r requirements.txt
-# 最小安装: pip install requests aiohttp
+# 最小安装: pip install requests aiohttp pandas numpy

@@ -1,23 +1,33 @@
-# 🎯 Stock Investment Decision Assistant
+# 🎯 股票投资决策辅助系统
 
-基于DIKW（数据-信息-知识-智慧）框架的智能股票投资决策辅助系统，为8只A股提供完整的投资建议。
+基于DIKW（数据-信息-知识-智慧）框架的智能股票投资决策辅助系统，提供完整的投资建议和智能选股功能。
 
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Stars](https://img.shields.io/github/stars/gorun78/stock-investment-assistant)](https://github.com/gorun78/stock-investment-assistant/stargazers)
 
-## 📊 监控的8只A股
+## ✨ 主要功能
 
-| 股票名称 | 代码 | 所属板块 | 风险等级 |
-|----------|------|----------|----------|
-| 科创信息 | 300730.SZ | 信息技术 | 中等 |
-| 赛恩斯 | 688480.SS | 环保工程 | 低 |
-| 景嘉微 | 300474.SZ | 半导体 | 高 |
-| 深信服 | 300454.SZ | 网络安全 | 高 |
-| 科大讯飞 | 002230.SZ | 人工智能 | 中等 |
-| 万兴科技 | 300624.SZ | 软件服务 | 中等 |
-| 威胜信息 | 688100.SS | 智能电网 | 低 |
-| 超图软件 | 300036.SZ | 地理信息 | 低 |
+### 📊 股票维护
+- 股票列表管理（添加/编辑/删除）
+- 股票详情查看
+- 风险等级标识
+
+### 🧠 智能选股
+- **5种选股策略**：成长股策略、价值股策略、高股息策略、趋势动量策略、均衡配置策略
+- 板块筛选功能
+- 潜力评分与投资评级
+- 一键添加到自选
+
+### 📈 投资分析
+- 实时股票数据获取
+- 投资组合分析
+- 风险评估与时机建议
+- 技术指标分析
+
+### 📋 报告生成
+- 完整投资报告
+- 策略分析报告
+- 风险评估报告
 
 ## 🏗️ DIKW框架实现
 
@@ -54,145 +64,94 @@
 
 ## 🚀 快速开始
 
+### 环境要求
+- Python 3.8+
+- Flask 2.x
+- 其他依赖见 requirements.txt
+
 ### 安装依赖
 ```bash
-pip install requests
+pip install -r requirements.txt
 ```
 
 ### 运行程序
-```bash
-# 方式1: 运行主程序（交互式）
-python stock_investment_assistant_main.py
 
-# 方式2: 直接使用类
-python -c "
-from stock_investment_assistant import DIKWStockAssistant
-assistant = DIKWStockAssistant(user_risk_profile='稳健型', investment_amount=100000)
+**方式1: 启动Web服务**
+```bash
+python src/web/web_app.py
+```
+然后访问 http://127.0.0.1:5000
+
+**方式2: 运行主程序（交互式）**
+```bash
+python stock_investment_assistant_main.py
+```
+
+**方式3: 直接使用类**
+```python
+from src.core.stock_investment_assistant_v2 import EnhancedDIKWStockAssistant
+
+assistant = EnhancedDIKWStockAssistant(user_risk_profile='稳健型', investment_amount=100000)
 report = assistant.generate_complete_report()
 assistant.display_summary_report()
-"
-```
-
-### 程序交互示例
-```
-🚀 股票投资决策辅助系统 v1.0
-基于DIKW框架: 数据→信息→知识→智慧
-============================================================
-
-📝 请配置您的投资偏好:
-1. 激进型 (高风险高收益)
-2. 稳健型 (中等风险稳健增长)
-3. 保守型 (低风险保值增值)
-请选择(1/2/3, 默认2): 2
-
-请输入投资金额(元, 默认100000): 100000
-
-============================================================
-🎯 股票投资决策辅助系统启动
-📊 用户配置: 稳健型 | 投资金额: ¥100,000
-============================================================
-
-📈 数据层: 正在获取实时股票数据...
-  ✓ 科创信息(300730.SZ): ¥36.89 (-0.88%)
-  ✓ 赛恩斯(688480.SS): ¥75.82 (+1.12%)
-  ✓ 景嘉微(300474.SZ): ¥144.16 (+2.74%)
-  ✓ 深信服(300454.SZ): ¥128.98 (+2.28%)
-  ✓ 科大讯飞(002230.SZ): ¥46.33 (+2.75%)
-  ✓ 万兴科技(300624.SZ): ¥120.94 (-0.09%)
-  ✓ 威胜信息(688100.SS): ¥61.39 (-1.56%)
-  ✓ 超图软件(300036.SZ): ¥18.46 (+0.05%)
-✅ 数据层完成: 获取到 8 只股票数据
-
-📊 信息层: 正在分析市场信息...
-  📈 市场情绪: 震荡整理
-  📊 涨跌比例: 5涨/3跌 (62.5%上涨)
-  🎯 最强板块: AI (+2.75%)
-  📉 平均涨跌: +0.80%
-✅ 信息层完成: 市场分析报告生成
-
-🧠 知识层: 正在生成投资知识...
-  🎯 适用策略: 稳健型
-  📊 目标收益: 年化10-15%
-  🛡️  最大回撤: 10%
-  📈 推荐股票: 4只
-  💰 投资组合分配:
-    • 赛恩斯: 25.0% (¥24946, 329股)
-    • 威胜信息: 20.0% (¥19952, 325股)
-    • 万兴科技: 20.0% (¥19955, 165股)
-    • 深信服: 15.0% (¥14961, 116股)
-✅ 知识层完成: 投资知识库生成
-
-🌟 智慧层: 正在生成投资智慧...
-  🌟 系统理解: 股票投资是宏观经济、行业政策、公司基本面、市场情绪的多要素系统交互
-  🎯 核心判断: 科技主线 + 政策受益 + 稳健增长
-  📊 市场展望: 中性
-  ⏰ 短期重点: 赛恩斯和威胜信息
-✅ 智慧层完成: 投资智慧报告生成
-
-📋 正在生成完整投资报告...
-✅ 完整报告生成完成!
-
-============================================================
-📋 股票投资决策摘要报告
-============================================================
-
-📊 市场概况:
-  • 市场趋势: 震荡整理
-  • 涨跌比例: 5涨/3跌
-  • 平均涨跌: +0.80%
-
-🎯 投资策略 (稳健型):
-  • 目标收益: 年化10-15%
-  • 最大回撤: 10%
-  • 持有期限: 12-24个月
-
-💰 投资组合建议:
-  • 赛恩斯: 25.0% (¥24946)
-  • 威胜信息: 20.0% (¥19952)
-  • 万兴科技: 20.0% (¥19955)
-  • 深信服: 15.0% (¥14961)
-  • 现金储备: ¥20000 (20.0%)
-
-🌟 核心智慧:
-  • 市场展望: 中性
-  • 核心判断: 科技主线 + 政策受益 + 稳健增长
-  • 短期重点: 赛恩斯、威胜信息
-
-⏰ 择时建议:
-  • 当前时段: 早盘观察期，避免追高
-  • 建议操作: 观察为主，等待回调机会
-
-🛡️ 风险控制:
-  • 止损设置: 6%
-  • 止盈目标: 15%
-
-💡 立即行动建议:
-  1. 根据当前价格调整买入计划
-  2. 设置价格预警监控
-  3. 准备投资资金，分批入场
-
-⚠️  风险提示:
-  • 投资有风险，入市需谨慎
-  • 本报告仅供参考，不构成投资建议
-  • 请根据自身风险承受能力做出决策
-============================================================
 ```
 
 ## 📁 项目结构
 
 ```
 stock-investment-assistant/
-├── stock_investment_assistant.py     # 核心DIKW框架实现
-├── stock_investment_assistant_main.py # 交互式主程序
-├── test_dikw_assistant.py           # 简化版测试程序
-├── requirements.txt                  # 依赖包列表
-├── README.md                        # 英文说明文档
-├── README_投资助手.md               # 中文详细文档
-├── LICENSE                          # MIT许可证
-└── .gitignore                       # Git忽略文件
+├── src/                    # 源代码目录
+│   ├── core/               # 核心业务逻辑
+│   │   ├── stock_investment_assistant.py      # 基础DIKW框架实现
+│   │   └── stock_investment_assistant_v2.py   # 增强版DIKW框架
+│   ├── analysis/           # 分析模块
+│   │   ├── advanced_analyzer.py      # 高级分析器
+│   │   ├── portfolio_optimizer.py    # 投资组合优化器
+│   │   ├── report_analyzer.py        # 报告分析器
+│   │   ├── risk_timing.py            # 风险与时序控制
+│   │   └── technical_indicators.py   # 技术指标计算
+│   └── web/                # Web应用
+│       ├── templates/      # HTML模板
+│       │   └── index.html  # 主页面
+│       └── web_app.py      # Flask Web服务
+├── tests/                  # 测试文件
+│   ├── test_dikw_assistant.py
+│   ├── test_enhanced_features.py
+│   └── test_optimization.py
+├── reports/                # 报告输出目录
+├── docs/                   # 文档目录
+│   └── skills/             # 技能文档
+├── .gitignore
+├── IMPROVEMENT_PLAN.md
+├── LICENSE
+├── README.md
+├── README_投资助手.md
+└── requirements.txt
 ```
 
-## 🎯 三种投资策略
+## 🎯 五种选股策略
+
+### 1. ⚖️ 均衡配置策略
+- **适合**: 稳健型投资者
+- **特点**: 兼顾成长与价值的均衡组合
+
+### 2. 🚀 成长股策略
+- **适合**: 激进型投资者
+- **特点**: 高ROE、高增长潜力的成长型股票
+
+### 3. 📊 价值股策略
+- **适合**: 价值投资者
+- **特点**: 低PE、估值合理的价值型股票
+
+### 4. 💰 高股息策略
+- **适合**: 收益型投资者
+- **特点**: 稳定分红、现金流充沛的股票
+
+### 5. 📈 趋势动量策略
+- **适合**: 技术型投资者
+- **特点**: 近期表现强势的股票
+
+## 🎯 三种投资风险偏好
 
 ### 1. 激进型策略
 - **适合**: 高风险承受能力，追求高收益
@@ -232,53 +191,24 @@ stock-investment-assistant/
 - 阈值: 权重偏离5%触发调整
 - 方法: 再平衡至目标权重
 
-## 🔧 高级功能
+## 🌐 Web API接口
 
-### 自定义配置
-```python
-from stock_investment_assistant import DIKWStockAssistant
+### 股票维护
+- `GET /api/stocks` - 获取股票列表
+- `POST /api/stocks` - 添加股票
+- `PUT /api/stocks/<name>` - 更新股票
+- `DELETE /api/stocks/<name>` - 删除股票
 
-# 自定义配置
-assistant = DIKWStockAssistant(
-    user_risk_profile="稳健型",
-    investment_amount=200000,
-    # 可扩展: 自定义股票列表、策略参数等
-)
+### 智能选股
+- `GET /api/stock_pool` - 获取股票池
+- `GET /api/selection_strategies` - 获取选股策略
+- `GET /api/sectors` - 获取板块列表
+- `POST /api/select_stocks` - 执行智能选股
 
-# 生成完整报告
-report = assistant.generate_complete_report()
-
-# 保存到文件
-assistant.save_report_to_file(report, "my_investment_report.json")
-```
-
-### 批量分析
-```python
-# 分析多个风险偏好
-profiles = ["激进型", "稳健型", "保守型"]
-for profile in profiles:
-    assistant = DIKWStockAssistant(user_risk_profile=profile, investment_amount=100000)
-    report = assistant.generate_complete_report()
-    assistant.save_report_to_file(report, f"report_{profile}.json")
-```
-
-### 定时任务
-```bash
-# 每天开盘后30分钟自动运行
-0 10 * * 1-5 cd /path/to/project && python stock_investment_assistant_main.py --auto >> investment_log.txt
-```
-
-## 📈 与现有系统集成
-
-### 数据共享
-- 使用相同的股票配置
-- 共享实时价格数据源（新浪财经API）
-- 统一的风险等级分类
-
-### 功能互补
-- **监控系统**: 实时价格监控、预警触发
-- **决策助手**: 投资分析、策略制定、决策支持
-- **结合使用**: 监控系统提供数据，决策助手提供智慧
+### 投资分析
+- `GET /api/analyze` - 获取投资分析
+- `GET /api/stocks/<name>/indicators` - 获取股票技术指标
+- `POST /api/generate_report` - 生成投资报告
 
 ## 🛠️ 开发指南
 
@@ -297,29 +227,9 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
-### 代码结构
-```python
-# 主要类: DIKWStockAssistant
-class DIKWStockAssistant:
-    # 数据层方法
-    def fetch_stock_data(self) -> Dict
-    
-    # 信息层方法  
-    def analyze_market_info(self) -> Dict
-    
-    # 知识层方法
-    def generate_investment_knowledge(self) -> Dict
-    
-    # 智慧层方法
-    def generate_investment_wisdom(self) -> Dict
-    
-    # 完整流程
-    def generate_complete_report(self) -> Dict
-```
-
 ### 扩展开发
 1. **添加新数据源**: 修改`fetch_stock_data()`方法
-2. **自定义策略**: 修改`INVESTMENT_STRATEGIES`配置
+2. **自定义策略**: 修改策略配置
 3. **添加新指标**: 在信息层分析方法中扩展
 4. **优化算法**: 改进投资组合构建逻辑
 
@@ -332,25 +242,6 @@ class DIKWStockAssistant:
 3. **代码贡献**: 遵循现有代码风格，添加测试
 4. **文档改进**: 完善使用说明和示例
 
-### 开发流程
-```bash
-# 1. Fork仓库
-# 2. 克隆你的fork
-git clone https://github.com/your-username/stock-investment-assistant.git
-
-# 3. 创建功能分支
-git checkout -b feature/new-feature
-
-# 4. 提交更改
-git add .
-git commit -m "feat: 添加新功能"
-
-# 5. 推送到fork
-git push origin feature/new-feature
-
-# 6. 创建Pull Request
-```
-
 ## 📄 许可证
 
 本项目采用MIT许可证 - 详见 [LICENSE](LICENSE) 文件。
@@ -361,7 +252,6 @@ git push origin feature/new-feature
 
 - **GitHub Issues**: [提交问题报告](https://github.com/gorun78/stock-investment-assistant/issues)
 - **邮箱**: 通过GitHub个人资料联系
-- **文档**: 查看详细使用说明
 
 ## 🙏 致谢
 
@@ -373,8 +263,8 @@ git push origin feature/new-feature
 
 ---
 
-**最后更新**: 2026-04-10  
-**版本**: v1.0  
+**最后更新**: 2026-04-11  
+**版本**: v2.0  
 **作者**: gorun78  
 **项目地址**: https://github.com/gorun78/stock-investment-assistant
 

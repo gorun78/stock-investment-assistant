@@ -1,6 +1,30 @@
 # 🎯 股票投资决策辅助系统
 
-基于DIKW框架的智能投资决策工具，为8只A股提供完整的投资建议。
+基于DIKW框架的智能投资决策工具，提供完整的投资建议和智能选股功能。
+
+## ✨ 主要功能
+
+### 📊 股票维护
+- 股票列表管理（添加/编辑/删除）
+- 股票详情查看
+- 风险等级标识
+
+### 🧠 智能选股
+- **5种选股策略**：成长股策略、价值股策略、高股息策略、趋势动量策略、均衡配置策略
+- 板块筛选功能
+- 潜力评分与投资评级
+- 一键添加到自选
+
+### 📈 投资分析
+- 实时股票数据获取
+- 投资组合分析
+- 风险评估与时机建议
+- 技术指标分析
+
+### 📋 报告生成
+- 完整投资报告
+- 策略分析报告
+- 风险评估报告
 
 ## 📊 监控的8只股票
 
@@ -50,23 +74,35 @@
 
 ## 🚀 快速开始
 
+### 环境要求
+- Python 3.8+
+- Flask 2.x
+
 ### 安装依赖
 ```bash
-pip install requests pandas
+pip install -r requirements.txt
 ```
 
 ### 运行程序
-```bash
-# 方式1: 运行主程序（交互式）
-python stock_investment_assistant_main.py
 
-# 方式2: 直接使用类
-python -c "
-from stock_investment_assistant import DIKWStockAssistant
-assistant = DIKWStockAssistant(user_risk_profile='稳健型', investment_amount=100000)
+**方式1: 启动Web服务（推荐）**
+```bash
+python src/web/web_app.py
+```
+然后访问 http://127.0.0.1:5000
+
+**方式2: 运行主程序（交互式）**
+```bash
+python stock_investment_assistant_main.py
+```
+
+**方式3: 直接使用类**
+```python
+from src.core.stock_investment_assistant_v2 import EnhancedDIKWStockAssistant
+
+assistant = EnhancedDIKWStockAssistant(user_risk_profile='稳健型', investment_amount=100000)
 report = assistant.generate_complete_report()
 assistant.display_summary_report()
-"
 ```
 
 ### 程序交互流程
@@ -93,7 +129,29 @@ assistant.display_summary_report()
 - 知识层: 完整的投资知识库
 - 智慧层: 系统智慧和未来决策
 
-## 🎯 三种投资策略
+## 🎯 五种选股策略
+
+### 1. ⚖️ 均衡配置策略
+- **适合**: 稳健型投资者
+- **特点**: 兼顾成长与价值的均衡组合
+
+### 2. 🚀 成长股策略
+- **适合**: 激进型投资者
+- **特点**: 高ROE、高增长潜力的成长型股票
+
+### 3. 📊 价值股策略
+- **适合**: 价值投资者
+- **特点**: 低PE、估值合理的价值型股票
+
+### 4. 💰 高股息策略
+- **适合**: 收益型投资者
+- **特点**: 稳定分红、现金流充沛的股票
+
+### 5. 📈 趋势动量策略
+- **适合**: 技术型投资者
+- **特点**: 近期表现强势的股票
+
+## 🎯 三种投资风险偏好
 
 ### 1. 激进型策略
 - **适合**: 高风险承受能力，追求高收益
@@ -168,82 +226,48 @@ assistant.display_summary_report()
 2. 淘汰表现不佳的股票
 3. 纳入新的投资机会
 
-## 📈 与现有监控系统集成
+## 🌐 Web API接口
 
-### 数据共享
-- 使用相同的股票配置 (`memory/stocks_config.json`)
-- 共享实时价格数据源（新浪财经API）
-- 统一的风险等级分类
+### 股票维护
+- `GET /api/stocks` - 获取股票列表
+- `POST /api/stocks` - 添加股票
+- `PUT /api/stocks/<name>` - 更新股票
+- `DELETE /api/stocks/<name>` - 删除股票
 
-### 功能互补
-- **监控系统**: 实时价格监控、预警触发
-- **决策助手**: 投资分析、策略制定、决策支持
-- **结合使用**: 监控系统提供数据，决策助手提供智慧
+### 智能选股
+- `GET /api/stock_pool` - 获取股票池
+- `GET /api/selection_strategies` - 获取选股策略
+- `GET /api/sectors` - 获取板块列表
+- `POST /api/select_stocks` - 执行智能选股
 
-### 自动化集成
-```bash
-# 定时运行示例（每天开盘后30分钟）
-0 10 * * 1-5 cd /path/to/workspace && python stock_investment_assistant_main.py --auto --profile 稳健型 --amount 100000 >> investment_log.txt
+### 投资分析
+- `GET /api/analyze` - 获取投资分析
+- `GET /api/stocks/<name>/indicators` - 获取股票技术指标
+- `POST /api/generate_report` - 生成投资报告
+
+## 📁 项目结构
+
 ```
-
-## 🛠️ 高级功能
-
-### 自定义配置
-```python
-# 自定义股票列表
-custom_stocks = {
-    "腾讯控股": {"symbol": "00700.HK", "sector": "互联网", "risk_level": "中等"},
-    "茅台": {"symbol": "600519.SS", "sector": "白酒", "risk_level": "低"}
-}
-
-# 自定义策略参数
-custom_strategy = {
-    "我的策略": {
-        "risk_tolerance": "自定义",
-        "target_return": "年化15%",
-        "max_drawdown": "12%",
-        "holding_period": "灵活"
-    }
-}
+stock-investment-assistant/
+├── src/                    # 源代码目录
+│   ├── core/               # 核心业务逻辑
+│   │   ├── stock_investment_assistant.py      # 基础DIKW框架实现
+│   │   └── stock_investment_assistant_v2.py   # 增强版DIKW框架
+│   ├── analysis/           # 分析模块
+│   │   ├── advanced_analyzer.py      # 高级分析器
+│   │   ├── portfolio_optimizer.py    # 投资组合优化器
+│   │   ├── report_analyzer.py        # 报告分析器
+│   │   ├── risk_timing.py            # 风险与时序控制
+│   │   └── technical_indicators.py   # 技术指标计算
+│   └── web/                # Web应用
+│       ├── templates/      # HTML模板
+│       │   └── index.html  # 主页面
+│       └── web_app.py      # Flask Web服务
+├── tests/                  # 测试文件
+├── reports/                # 报告输出目录
+├── docs/                   # 文档目录
+└── requirements.txt        # 依赖包列表
 ```
-
-### 批量分析
-```python
-# 分析多个风险偏好
-profiles = ["激进型", "稳健型", "保守型"]
-for profile in profiles:
-    assistant = DIKWStockAssistant(user_risk_profile=profile, investment_amount=100000)
-    report = assistant.generate_complete_report()
-    assistant.save_report_to_file(report, f"report_{profile}.json")
-```
-
-### 历史回测
-```python
-# 模拟历史数据分析（需扩展）
-class HistoricalAnalyzer:
-    def backtest_strategy(self, start_date, end_date, strategy):
-        # 实现历史回测逻辑
-        pass
-```
-
-## ⚠️ 注意事项
-
-### 数据源可靠性
-- 新浪财经API为免费数据源，可能存在延迟
-- 重要决策建议使用付费数据源验证
-- 非交易时间可能无法获取实时数据
-
-### 投资风险提示
-1. **本程序仅供参考**，不构成投资建议
-2. **投资有风险**，入市需谨慎
-3. **过去表现不代表未来**，市场可能变化
-4. **请根据自身风险承受能力**做出决策
-5. **建议咨询专业投资顾问**进行重大投资
-
-### 技术限制
-- 依赖网络连接获取实时数据
-- 免费API可能有调用频率限制
-- 模拟数据在API不可用时使用
 
 ## 🔧 故障排除
 
@@ -256,22 +280,22 @@ class HistoricalAnalyzer:
 ```bash
 # 启用详细日志
 python stock_investment_assistant_main.py --debug
-
-# 使用模拟数据（不依赖网络）
-python -c "
-from stock_investment_assistant import DIKWStockAssistant
-assistant = DIKWStockAssistant(user_risk_profile='稳健型', investment_amount=100000)
-assistant.stock_data = assistant._generate_mock_data('测试', {'symbol': '000001.SZ', 'sector': '测试', 'risk_level': '中等'})
-report = assistant.generate_complete_report()
-"
 ```
+
+## ⚠️ 注意事项
+
+### 投资风险提示
+1. **本程序仅供参考**，不构成投资建议
+2. **投资有风险**，入市需谨慎
+3. **过去表现不代表未来**，市场可能变化
+4. **请根据自身风险承受能力**做出决策
+5. **建议咨询专业投资顾问**进行重大投资
 
 ## 📚 学习资源
 
 ### DIKW框架
 - 《信息架构：超越Web设计》
 - 《知识的边界》
-- DIKW模型在投资决策中的应用研究
 
 ### 投资知识
 - 《聪明的投资者》（本杰明·格雷厄姆）
@@ -281,24 +305,6 @@ report = assistant.generate_complete_report()
 ### 技术分析
 - 《日本蜡烛图技术》
 - 《技术分析》（马丁·普林格）
-- 《股票大作手回忆录》
-
-## 🚀 未来扩展计划
-
-### 短期计划（1-3个月）
-1. 增加更多数据源（东方财富、同花顺）
-2. 添加基本面分析（财务数据、估值指标）
-3. 实现简单的回测功能
-
-### 中期计划（3-12个月）
-1. 集成机器学习模型预测
-2. 添加多因子选股模型
-3. 实现投资组合优化算法
-
-### 长期计划（12个月+）
-1. 开发Web界面和移动端应用
-2. 实现自动化交易接口
-3. 构建完整的量化投资平台
 
 ## 👥 贡献指南
 
@@ -313,16 +319,9 @@ report = assistant.generate_complete_report()
 
 本项目采用MIT许可证，详见LICENSE文件。
 
-## 📞 支持与联系
-
-如有问题或建议，请通过以下方式联系：
-- GitHub Issues: 提交问题报告
-- Email: 项目维护者邮箱
-- 文档: 查看详细使用说明
-
 ---
 
-**最后更新**: 2026-04-10  
-**版本**: v1.0  
+**最后更新**: 2026-04-11  
+**版本**: v2.0  
 **作者**: DT老炮  
 **致谢**: 感谢所有贡献者和用户的支持！
