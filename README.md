@@ -29,6 +29,13 @@
 - 策略分析报告
 - 风险评估报告
 
+### 🚀 专业股票投资辅助工具 (新增)
+- **多数据源支持**: 新浪财经 + 东方财富 + Tushare
+- **异步数据获取**: 高性能并发处理
+- **完整命令行界面**: analyze/monitor/config/report命令
+- **动态配置管理**: 灵活的配置文件系统
+- **智能缓存机制**: 减少重复网络请求
+
 ## 🏗️ DIKW框架实现
 
 ### 1. 数据层 (Data)
@@ -66,7 +73,8 @@
 
 ### 环境要求
 - Python 3.8+
-- Flask 2.x
+- Flask 2.x (Web界面)
+- aiohttp (专业工具)
 - 其他依赖见 requirements.txt
 
 ### 安装依赖
@@ -87,7 +95,21 @@ python src/web/web_app.py
 python stock_investment_assistant_main.py
 ```
 
-**方式3: 直接使用类**
+**方式3: 使用专业股票投资辅助工具**
+```bash
+# 基本分析
+python stock_pro_tool.py analyze --symbols 300730.SZ,688480.SS --profile 稳健型 --amount 100000
+
+# 配置管理
+python stock_pro_tool.py config --list
+python stock_pro_tool.py config --set monitoring.interval_minutes 10
+
+# 查看帮助
+python stock_pro_tool.py --help
+python stock_pro_tool.py analyze --help
+```
+
+**方式4: 直接使用类**
 ```python
 from src.core.stock_investment_assistant_v2 import EnhancedDIKWStockAssistant
 
@@ -114,6 +136,14 @@ stock-investment-assistant/
 │       ├── templates/      # HTML模板
 │       │   └── index.html  # 主页面
 │       └── web_app.py      # Flask Web服务
+├── stock_pro_tool.py       # 专业股票投资辅助工具 (命令行版本)
+├── setup.py                # 专业工具安装脚本
+├── test_pro_tool.py        # 专业工具测试脚本
+├── demo_pro_tool.py        # 专业工具演示脚本
+├── config_template.json    # 配置文件模板
+├── PROFESSIONAL_STOCK_TOOL_PLAN.md  # 专业工具项目计划
+├── README_PRO_TOOL.md      # 专业工具详细文档
+├── UPDATE_SUMMARY.md       # 专业工具更新总结
 ├── tests/                  # 测试文件
 │   ├── test_dikw_assistant.py
 │   ├── test_enhanced_features.py
@@ -210,6 +240,49 @@ stock-investment-assistant/
 - `GET /api/stocks/<name>/indicators` - 获取股票技术指标
 - `POST /api/generate_report` - 生成投资报告
 
+## 🚀 专业股票投资辅助工具
+
+### 核心特性
+1. **🏗️ 模块化架构**: 配置管理、数据获取、DIKW分析引擎、命令行界面
+2. **📊 多数据源**: 新浪财经 + 东方财富 + Tushare，支持优先级配置
+3. **⚡ 异步高性能**: 异步数据获取，智能缓存机制
+4. **🎯 完整CLI**: analyze/monitor/config/report命令，丰富的参数选项
+5. **⚙️ 动态配置**: 配置文件管理，支持运行时配置更新
+6. **🧠 智能分析**: 完整的DIKW框架实现，从数据到智慧的完整流程
+
+### 快速使用
+```bash
+# 1. 安装专业工具
+python setup.py
+
+# 2. 基本分析
+python stock_pro_tool.py analyze --symbols 300730.SZ,688480.SS --profile 稳健型 --amount 100000
+
+# 3. 批量分析不同策略
+for profile in "激进型 稳健型 保守型"; do
+  python stock_pro_tool.py analyze --symbols 300730.SZ,688480.SS --profile $profile --amount 100000 --output report_${profile}.json
+done
+
+# 4. 配置监控
+python stock_pro_tool.py config --set monitoring.interval_minutes 10
+python stock_pro_tool.py config --set monitoring.alert_threshold_percent 1.5
+```
+
+### 与Web版本的对比
+| 特性 | Web版本 | 专业工具 |
+|------|---------|----------|
+| 界面 | Web浏览器 | 命令行 |
+| 数据源 | 新浪财经 | 多数据源 |
+| 性能 | 同步请求 | 异步并发 |
+| 配置 | 硬编码 | 动态配置 |
+| 部署 | 需要Web服务器 | 单机运行 |
+| 自动化 | 有限 | 完整支持 |
+
+### 详细文档
+- 完整使用说明: [README_PRO_TOOL.md](README_PRO_TOOL.md)
+- 项目计划: [PROFESSIONAL_STOCK_TOOL_PLAN.md](PROFESSIONAL_STOCK_TOOL_PLAN.md)
+- 更新总结: [UPDATE_SUMMARY.md](UPDATE_SUMMARY.md)
+
 ## 🛠️ 开发指南
 
 ### 环境设置
@@ -232,6 +305,7 @@ pip install -r requirements.txt
 2. **自定义策略**: 修改策略配置
 3. **添加新指标**: 在信息层分析方法中扩展
 4. **优化算法**: 改进投资组合构建逻辑
+5. **集成专业工具**: 将专业工具功能集成到Web版本
 
 ## 🤝 贡献指南
 
