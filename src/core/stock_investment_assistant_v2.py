@@ -75,16 +75,18 @@ INVESTMENT_STRATEGIES = {
 class EnhancedDIKWStockAssistant:
     """增强版DIKW股票投资决策辅助系统"""
     
-    def __init__(self, user_risk_profile="稳健型", investment_amount=100000):
+    def __init__(self, user_risk_profile="稳健型", investment_amount=100000, stock_config=None):
         """
         初始化投资助手
         
         Args:
             user_risk_profile: 用户风险偏好（激进型/稳健型/保守型）
             investment_amount: 投资金额（元）
+            stock_config: 自定义股票配置（可选）
         """
         self.user_risk_profile = user_risk_profile
         self.investment_amount = investment_amount
+        self.stock_config = stock_config if stock_config else STOCK_CONFIG.copy()
         self.stock_data = {}
         self.market_analysis = {}
         self.strategy_recommendations = {}
@@ -113,7 +115,7 @@ class EnhancedDIKWStockAssistant:
         print("📈 数据层: 正在获取实时股票数据...")
         
         stock_data = {}
-        for name, config in STOCK_CONFIG.items():
+        for name, config in self.stock_config.items():
             try:
                 symbol = config["symbol"]
                 if symbol.endswith(".SZ"):

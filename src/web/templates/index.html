@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
     <style>
         :root {
             --primary-color: #3b82f6;
@@ -18,8 +19,8 @@
             --card-bg: #111827;
             --border-color: #374151;
             --text-primary: #ffffff;
-            --text-secondary: #d1d5db;
-            --text-muted: #9ca3af;
+            --text-secondary: #e5e7eb;
+            --text-muted: #d1d5db;
         }
 
         body {
@@ -259,6 +260,23 @@
             font-weight: 600;
         }
 
+        .modal-body .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        .modal-body .bg-dark\/50 {
+            background: rgba(30, 41, 59, 0.9) !important;
+        }
+
+        .modal-body .indicator-card {
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-body .card {
+            background: rgba(17, 24, 39, 0.95);
+        }
+
         .form-control {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border-color);
@@ -476,6 +494,79 @@
             border-top: 1px solid var(--border-color);
         }
 
+        .autocomplete-wrapper {
+            position: relative;
+        }
+
+        .autocomplete-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 280px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .autocomplete-suggestions.show {
+            display: block;
+            animation: fadeInDown 0.2s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .autocomplete-suggestion {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .autocomplete-suggestion:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-suggestion:hover,
+        .autocomplete-suggestion.active {
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .autocomplete-suggestion .stock-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .autocomplete-suggestion .stock-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .autocomplete-suggestion .stock-meta span {
+            margin-right: 12px;
+        }
+
+        .autocomplete-empty {
+            padding: 16px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
         .glow-text {
             text-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
         }
@@ -537,6 +628,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            color: var(--text-primary);
         }
 
         .learning-card:hover {
@@ -548,6 +640,13 @@
         .learning-card h5 {
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .learning-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
         .guide-step {
@@ -556,6 +655,17 @@
             padding: 1.5rem;
             text-align: center;
             border: 1px solid var(--border-color);
+        }
+
+        .guide-step h6 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .guide-step p {
+            color: var(--text-secondary);
         }
 
         .step-number {
@@ -582,26 +692,67 @@
         .bg-success\/10 { background: rgba(34, 197, 94, 0.1); }
 
         .text-warning { color: var(--warning-color) !important; }
+
+        .text-secondary { 
+            color: var(--text-secondary) !important; 
+        }
+
+        .small, .text-sm {
+            color: var(--text-secondary) !important;
+        }
+
+        .font-bold {
+            color: var(--text-primary);
+        }
+
+        .indicator-card span {
+            color: var(--text-primary);
+        }
+
+        .indicator-card .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        #indicator-vol-level,
+        #indicator-vol-risk,
+        #indicator-volume-level,
+        #indicator-trend,
+        #indicator-trend-confidence,
+        #indicator-momentum-level,
+        #indicator-momentum-signal,
+        #indicator-current-position {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        #policy-news-list strong,
+        #policy-news-list p,
+        #policy-news-list span,
+        #policy-news-list .small {
+            color: var(--text-primary) !important;
+        }
+
+        #policy-news-list .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        #policy-news-list .text-info {
+            color: var(--info-color) !important;
+        }
+
+        #market-events-list strong,
+        #market-events-list p,
+        #market-events-list span,
+        #market-events-list .small {
+            color: var(--text-primary) !important;
+        }
+
+        #market-events-list .text-secondary {
+            color: var(--text-secondary) !important;
+        }
     </style>
 </head>
 <body>
-    <!-- 头部英雄区 -->
-    <div class="hero-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h1 class="hero-title glow-text">股票投资决策辅助系统</h1>
-                    <p class="hero-subtitle mt-3">基于DIKW框架的智能投资分析工具</p>
-                    <div class="mt-4">
-                        <span class="badge bg-white/20 text-white px-3 py-1">实时数据</span>
-                        <span class="badge bg-white/20 text-white px-3 py-1">智能分析</span>
-                        <span class="badge bg-white/20 text-white px-3 py-1">风险控制</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- 主内容区 -->
     <div class="container">
         <!-- 加载动画 -->
@@ -616,28 +767,28 @@
         <!-- 标签页导航 -->
         <ul class="nav nav-tabs mt-5" id="main-tabs">
             <li class="nav-item">
-                <a class="nav-link active" href="#stock-management">
-                    <i class="fa fa-star mr-1"></i>自选股票
+                <a class="nav-link active" href="#market-research">
+                    <i class="fa fa-globe mr-1"></i>市场研究
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#smart-selection">
-                    <i class="fa fa-lightbulb-o mr-1"></i>智能选股
+                <a class="nav-link" href="#stock-analysis">
+                    <i class="fa fa-line-chart mr-1"></i>股票分析
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#simulation-trading">
-                    <i class="fa fa-gamepad mr-1"></i>模拟炒股
+                <a class="nav-link" href="#investment-decision">
+                    <i class="fa fa-balance-scale mr-1"></i>投资决策
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#risk-control">
-                    <i class="fa fa-shield mr-1"></i>风险控制
+                <a class="nav-link" href="#trading-execution">
+                    <i class="fa fa-exchange mr-1"></i>交易执行
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#analysis-results">
-                    <i class="fa fa-bar-chart mr-1"></i>投资分析
+                <a class="nav-link" href="#continuous-tracking">
+                    <i class="fa fa-bell mr-1"></i>持续跟踪
                 </a>
             </li>
             <li class="nav-item">
@@ -647,13 +798,76 @@
             </li>
         </ul>
 
-        <!-- 股票维护区域 -->
-        <div id="stock-management">
-            <div class="card mt-3">
+        <!-- 市场研究区域 -->
+        <div id="market-research">
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="overview-card">
+                        <div class="card-title">市场趋势</div>
+                        <div class="card-text" id="market-trend">--</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="overview-card">
+                        <div class="card-title">涨跌比例</div>
+                        <div class="card-text" id="rise-fall-ratio">--</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="overview-card">
+                        <div class="card-title">平均涨跌</div>
+                        <div class="card-text" id="average-change">--</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="overview-card">
+                        <div class="card-title">风险预警</div>
+                        <div class="card-text text-warning" id="risk-alerts">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-pie-chart text-primary"></i> 板块表现</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3" id="sector-performance">
+                                <div class="col-12 text-center text-secondary py-4">
+                                    <i class="fa fa-pie-chart fa-2x mb-2"></i>
+                                    <p>点击"执行分析"查看板块表现</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2><i class="fa fa-star text-warning"></i> 自选股</h2>
+                            <button type="button" id="add-stock-btn" class="btn btn-primary btn-sm">
+                                <i class="fa fa-plus mr-1"></i>添加
+                            </button>
+                        </div>
+                        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                            <div id="watchlist-container">
+                                <div class="text-center text-secondary py-4">
+                                    <i class="fa fa-star-o fa-2x mb-2"></i>
+                                    <p>暂无自选股</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h2><i class="fa fa-table text-primary"></i> 股票列表</h2>
-                    <button type="button" id="add-stock-btn" class="btn btn-primary btn-sm">
-                        <i class="fa fa-plus mr-1"></i>添加股票
+                    <h2><i class="fa fa-table text-primary"></i> 股票池管理</h2>
+                    <button class="btn btn-outline-primary btn-sm" id="refresh-quotes-btn">
+                        <i class="fa fa-refresh me-1"></i>刷新实时行情
                     </button>
                 </div>
                 <div class="card-body">
@@ -665,20 +879,323 @@
                                     <th>股票代码</th>
                                     <th>所属板块</th>
                                     <th>风险等级</th>
+                                    <th>当前价格</th>
+                                    <th>涨跌幅</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody id="stock-table-body">
-                                <!-- 股票列表将通过JavaScript动态添加 -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
+            <div class="row g-4 mt-2">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h2><i class="fa fa-newspaper-o text-info"></i> 政策与消息</h2>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-success" id="btn-refresh-news">
+                                    <i class="fa fa-refresh"></i> 更新
+                                </button>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-outline-info active" id="btn-all-news">全部</button>
+                                    <button type="button" class="btn btn-outline-info" id="btn-policy-news">政策</button>
+                                    <button type="button" class="btn btn-outline-info" id="btn-market-news">资讯</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                            <div id="policy-news-list">
+                                <div class="text-center text-secondary py-4">
+                                    <i class="fa fa-newspaper-o fa-2x mb-2"></i>
+                                    <p>加载中...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-calendar text-warning"></i> 事件日历</h2>
+                        </div>
+                        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                            <div id="market-events-list">
+                                <div class="text-center text-secondary py-4">
+                                    <i class="fa fa-calendar fa-2x mb-2"></i>
+                                    <p>加载中...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h2><i class="fa fa-lightbulb-o text-warning"></i> 政策影响分析</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <div class="card-title">市场情绪</div>
+                                <div class="card-text" id="policy-sentiment">--</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <div class="card-title">情绪评分</div>
+                                <div class="card-text" id="policy-sentiment-score">--</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <div class="card-title">重点政策</div>
+                                <div class="card-text" id="key-policy-count">--</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="overview-card">
+                                <div class="card-title">影响板块</div>
+                                <div class="card-text" id="affected-sectors-count">--</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h5 class="text-primary mb-3"><i class="fa fa-bar-chart mr-2"></i>板块影响分析</h5>
+                        <div class="row g-3" id="sector-impact-list">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h5 class="text-warning mb-3"><i class="fa fa-lightbulb-o mr-2"></i>投资建议</h5>
+                        <div id="policy-recommendations">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- 模拟炒股区域 -->
-        <div id="simulation-trading" style="display: none;">
+        <!-- 股票分析区域 -->
+        <div id="stock-analysis" style="display: none;">
+            <div class="d-flex justify-content-between mb-4">
+                <h4><i class="fa fa-line-chart text-primary mr-2"></i>股票技术分析</h4>
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="stock-select-chart" style="width: 200px;">
+                        <option value="">选择股票</option>
+                    </select>
+                    <button type="button" id="analyze-btn" class="btn btn-primary">
+                        <i class="fa fa-play mr-2"></i>执行分析
+                    </button>
+                </div>
+            </div>
+            
+            <div class="row g-4 mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-line-chart text-primary"></i> 价格走势图</h2>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 350px;">
+                                <canvas id="price-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-bar-chart text-warning"></i> 成交量</h2>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 350px;">
+                                <canvas id="volume-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-tachometer text-info"></i> RSI指标</h2>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 250px;">
+                                <canvas id="rsi-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-exchange text-success"></i> MACD指标</h2>
+                        </div>
+                        <div class="card-body">
+                            <div style="height: 250px;">
+                                <canvas id="macd-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fa fa-bar-chart text-primary"></i> 技术指标详情</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4" id="stock-data">
+                        <div class="col-12 text-center text-secondary py-5">
+                            <i class="fa fa-bar-chart fa-3x mb-3"></i>
+                            <p>选择股票后点击"执行分析"查看技术指标</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 投资决策区域 -->
+        <div id="investment-decision" style="display: none;">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-lightbulb-o text-warning"></i> 智能选股</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">选择策略</label>
+                                    <select class="form-select" id="strategy-select-2">
+                                        <option value="balanced">⚖️ 均衡配置策略</option>
+                                        <option value="growth">🚀 成长股策略</option>
+                                        <option value="value">📊 价值股策略</option>
+                                        <option value="dividend">💰 高股息策略</option>
+                                        <option value="momentum">📈 趋势动量策略</option>
+                                        <option value="quality">👑 品质龙头策略</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">板块筛选</label>
+                                    <select class="form-select" id="sector-filter-2">
+                                        <option value="">全部板块</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">选股数量</label>
+                                    <input type="number" class="form-control" id="stock-count" value="5" min="1" max="20">
+                                </div>
+                                <div class="col-md-6 d-flex align-items-end">
+                                    <button type="button" id="execute-selection-btn" class="btn btn-warning w-100">
+                                        <i class="fa fa-search mr-2"></i>执行选股
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="selection-results">
+                                <div class="text-center text-secondary py-4">
+                                    <i class="fa fa-lightbulb-o fa-2x mb-2"></i>
+                                    <p>选择策略后点击"执行选股"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-pie-chart text-primary"></i> 投资组合</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="bg-dark/50 rounded-xl p-4 mb-3" style="height: 250px;">
+                                <canvas id="portfolio-chart"></canvas>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <span class="text-secondary">总投资:</span> 
+                                    <span class="float-end font-weight-bold" id="total-investment">--</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="text-secondary">配置股票:</span> 
+                                    <span class="float-end font-weight-bold" id="allocated-stocks">--</span> 只
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="text-secondary">夏普比率:</span> 
+                                    <span class="float-end font-weight-bold" id="sharpe-ratio">--</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="text-secondary">预期收益:</span> 
+                                    <span class="float-end font-weight-bold" id="expected-return">--</span>%
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="text-secondary">风险等级:</span> 
+                                    <span class="float-end font-weight-bold" id="risk-level">--</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-2">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-clock-o text-primary"></i> 择时建议</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="timing-card">
+                                        <div class="card-title">信号</div>
+                                        <div class="card-text" id="timing-signal">--</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="timing-card">
+                                        <div class="card-title">建议操作</div>
+                                        <div class="card-text" id="timing-action">--</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="timing-card">
+                                        <div class="card-title">置信度</div>
+                                        <div class="card-text" id="timing-confidence">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa fa-lightbulb-o text-primary"></i> 立即行动建议</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="immediate-actions">
+                                <div class="text-center text-secondary py-4">
+                                    <i class="fa fa-lightbulb-o fa-2x mb-2"></i>
+                                    <p>执行分析后显示行动建议</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 交易执行区域 -->
+        <div id="trading-execution" style="display: none;">
             <div class="card mt-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h2><i class="fa fa-gamepad text-primary"></i> 模拟炒股</h2>
@@ -878,53 +1395,8 @@
             </div>
         </div>
 
-        <!-- 智能选股区域 -->
-        <div id="smart-selection" style="display: none;">
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h2><i class="fa fa-lightbulb-o text-warning"></i> 智能选股</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <label class="form-label">选择策略</label>
-                            <select class="form-select" id="strategy-select-2">
-                                <option value="balanced">⚖️ 均衡配置策略</option>
-                                <option value="growth">🚀 成长股策略</option>
-                                <option value="value">📊 价值股策略</option>
-                                <option value="dividend">💰 高股息策略</option>
-                                <option value="momentum">📈 趋势动量策略</option>
-                                <option value="quality">👑 品质龙头策略</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">板块筛选</label>
-                            <select class="form-select" id="sector-filter-2">
-                                <option value="">全部板块</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">选股数量</label>
-                            <input type="number" class="form-control" id="stock-count" value="5" min="1" max="20">
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <button type="button" id="execute-selection-btn" class="btn btn-warning">
-                            <i class="fa fa-search mr-2"></i>执行选股
-                        </button>
-                    </div>
-                    <div class="mt-4" id="selection-results">
-                        <div class="text-center text-secondary py-5">
-                            <i class="fa fa-lightbulb-o fa-3x mb-3"></i>
-                            <p>选择策略后点击"执行选股"获取推荐股票</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 风险控制区域 -->
-        <div id="risk-control" style="display: none;">
+        <!-- 持续跟踪区域 -->
+        <div id="continuous-tracking" style="display: none;">
             <div class="card mt-3">
                 <div class="card-header">
                     <h2><i class="fa fa-shield text-danger"></i> 风险控制</h2>
@@ -1018,6 +1490,76 @@
                             </button>
                         </div>
                     </div>
+
+                    <div class="card bg-dark/50 border-0 mt-4">
+                        <div class="card-header bg-success/10 border-0 d-flex justify-content-between align-items-center">
+                            <h5 class="text-success"><i class="fa fa-download mr-2"></i>报告下载</h5>
+                            <button type="button" id="generate-reports-btn" class="btn btn-success btn-sm">
+                                <i class="fa fa-file-text mr-1"></i>生成报告
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3" id="report-files">
+                                <div class="col-12 text-center text-secondary py-4">
+                                    <i class="fa fa-file-text-o fa-2x mb-2"></i>
+                                    <p>点击"生成报告"创建投资分析报告</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mt-2">
+                        <div class="col-md-6">
+                            <div class="card bg-dark/50 border-0">
+                                <div class="card-header bg-primary/10 border-0">
+                                    <h5 class="text-primary"><i class="fa fa-history mr-2"></i>操作历史</h5>
+                                </div>
+                                <div class="card-body" style="max-height: 350px; overflow-y: auto;">
+                                    <div id="operation-history-list">
+                                        <div class="text-center text-secondary py-4">
+                                            <i class="fa fa-history fa-2x mb-2"></i>
+                                            <p>暂无操作记录</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-dark/50 border-0">
+                                <div class="card-header bg-info/10 border-0">
+                                    <h5 class="text-info"><i class="fa fa-bar-chart mr-2"></i>统计概览</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-3">
+                                        <div class="col-6">
+                                            <div class="bg-dark/50 rounded-lg p-3 text-center">
+                                                <span class="text-secondary small">总操作次数</span>
+                                                <p class="text-xl font-bold text-primary mb-0" id="stat-total-ops">0</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="bg-dark/50 rounded-lg p-3 text-center">
+                                                <span class="text-secondary small">交易次数</span>
+                                                <p class="text-xl font-bold text-success mb-0" id="stat-total-trades">0</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="bg-dark/50 rounded-lg p-3 text-center">
+                                                <span class="text-secondary small">分析次数</span>
+                                                <p class="text-xl font-bold text-warning mb-0" id="stat-total-analyses">0</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="bg-dark/50 rounded-lg p-3 text-center">
+                                                <span class="text-secondary small">累计盈亏</span>
+                                                <p class="text-xl font-bold mb-0" id="stat-total-profit">¥0</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1107,175 +1649,7 @@
             </div>
         </div>
 
-        <!-- 分析结果区域 -->
-        <div id="analysis-results" style="display: none;">
-            <!-- 操作按钮 -->
-            <div class="d-flex justify-content-between mb-4">
-                <button type="button" id="analyze-btn" class="btn btn-primary">
-                    <i class="fa fa-line-chart mr-2"></i>执行分析
-                </button>
-                <button type="button" id="generate-reports-btn" class="btn btn-success">
-                    <i class="fa fa-file-text mr-2"></i>生成报告
-                </button>
-            </div>
 
-            <!-- 市场概况 -->
-            <div class="card mt-3 slide-up">
-                <div class="card-header">
-                    <h2><i class="fa fa-trending-up text-primary"></i> 市场概况</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row g-4">
-                        <div class="col-md-3">
-                            <div class="overview-card">
-                                <div class="card-title">市场趋势</div>
-                                <div class="card-text" id="market-trend">--</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="overview-card">
-                                <div class="card-title">涨跌比例</div>
-                                <div class="card-text" id="rise-fall-ratio">--</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="overview-card">
-                                <div class="card-title">平均涨跌</div>
-                                <div class="card-text" id="average-change">--</div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="overview-card">
-                                <div class="card-title">风险预警</div>
-                                <div class="card-text" id="risk-alerts">--</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 板块表现 -->
-            <div class="card mt-5 slide-up">
-                <div class="card-header">
-                    <h2><i class="fa fa-pie-chart text-primary"></i> 板块表现</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row g-4" id="sector-performance">
-                        <!-- 板块表现将通过JavaScript动态添加 -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- 股票数据与技术指标 -->
-            <div class="card mt-5 slide-up">
-                <div class="card-header">
-                    <h2><i class="fa fa-bar-chart text-primary"></i> 股票数据与技术指标</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row g-4" id="stock-data">
-                        <!-- 股票数据将通过JavaScript动态添加 -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- 投资组合 -->
-            <div class="card mt-5 slide-up">
-                <div class="card-header">
-                    <h2><i class="fa fa-pie-chart text-primary"></i> 投资组合</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="bg-dark/50 rounded-xl p-4" style="height: 320px;">
-                                <canvas id="portfolio-chart"></canvas>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card bg-dark/50 border-0">
-                                <div class="card-body">
-                                    <h5 class="card-title text-primary mb-4">组合指标</h5>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <span class="text-secondary">总投资:</span> 
-                                            <span class="float-end font-weight-bold" id="total-investment">--</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span class="text-secondary">配置股票:</span> 
-                                            <span class="float-end font-weight-bold" id="allocated-stocks">--</span> 只
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span class="text-secondary">夏普比率:</span> 
-                                            <span class="float-end font-weight-bold" id="sharpe-ratio">--</span>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span class="text-secondary">预期收益:</span> 
-                                            <span class="float-end font-weight-bold" id="expected-return">--</span>%
-                                        </li>
-                                        <li class="list-group-item">
-                                            <span class="text-secondary">风险等级:</span> 
-                                            <span class="float-end font-weight-bold" id="risk-level">--</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 择时建议 -->
-            <div class="card mt-5 slide-up">
-                <div class="card-header">
-                    <h2><i class="fa fa-clock-o text-primary"></i> 择时建议</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="timing-card">
-                                <div class="card-title">信号</div>
-                                <div class="card-text" id="timing-signal">--</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="timing-card">
-                                <div class="card-title">建议操作</div>
-                                <div class="card-text" id="timing-action">--</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="timing-card">
-                                <div class="card-title">置信度</div>
-                                <div class="card-text" id="timing-confidence">--</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 立即行动建议 -->
-            <div class="card mt-5 slide-up">
-                <div class="card-header">
-                    <h2><i class="fa fa-lightbulb-o text-primary"></i> 立即行动建议</h2>
-                </div>
-                <div class="card-body">
-                    <div id="immediate-actions">
-                        <!-- 行动建议将通过JavaScript动态添加 -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- 报告下载 -->
-            <div class="card mt-5 slide-up">
-                <div class="card-header">
-                    <h2><i class="fa fa-download text-primary"></i> 报告下载</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row g-3" id="report-files">
-                        <!-- 报告文件将通过JavaScript动态添加 -->
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- 添加股票模态框 -->
@@ -1288,9 +1662,10 @@
                 </div>
                 <div class="modal-body">
                     <form id="add-stock-form">
-                        <div class="mb-3">
+                        <div class="mb-3 autocomplete-wrapper">
                             <label for="stock-name" class="form-label">股票名称</label>
-                            <input type="text" class="form-control" id="stock-name" required placeholder="例如: 科创信息">
+                            <input type="text" class="form-control" id="stock-name" required placeholder="输入股票名称或代码搜索" autocomplete="off">
+                            <div id="stock-suggestions" class="autocomplete-suggestions"></div>
                         </div>
                         <div class="mb-3">
                             <label for="stock-symbol" class="form-label">股票代码</label>
@@ -1481,6 +1856,66 @@
         </div>
     </div>
 
+    <!-- 板块详情模态框 -->
+    <div class="modal fade" id="sector-detail-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sector-detail-title"><i class="fa fa-industry mr-2"></i>板块详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-dark/50 border-0">
+                                <div class="card-body py-3 text-center">
+                                    <span class="text-secondary">影响程度</span>
+                                    <h4 class="mt-2 mb-0" id="sector-sentiment">--</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-dark/50 border-0">
+                                <div class="card-body py-3 text-center">
+                                    <span class="text-secondary">相关消息</span>
+                                    <h4 class="mt-2 mb-0" id="sector-news-count">--</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-dark/50 border-0">
+                                <div class="card-body py-3 text-center">
+                                    <span class="text-secondary">影响评分</span>
+                                    <h4 class="mt-2 mb-0" id="sector-impact-score">--</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="text-primary mb-3"><i class="fa fa-newspaper-o mr-2"></i>相关政策与消息</h6>
+                    <div id="sector-news-list" class="mb-4">
+                        <div class="text-center text-secondary py-4">
+                            <i class="fa fa-spinner fa-spin fa-2x mb-2"></i>
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                    
+                    <h6 class="text-warning mb-3"><i class="fa fa-lightbulb-o mr-2"></i>投资建议</h6>
+                    <div id="sector-suggestions">
+                        <div class="text-center text-secondary py-4">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa fa-times mr-1"></i>关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 页脚 -->
     <footer class="footer mt-5">
         <div class="container">
@@ -1501,6 +1936,10 @@
     <!-- 脚本 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        if (typeof chartjsPluginAnnotation !== 'undefined') {
+            Chart.register(chartjsPluginAnnotation);
+        }
+        
         let portfolioChart = null;
         let currentStockData = {};
 
@@ -1510,6 +1949,16 @@
                 modal.show();
             });
             document.getElementById('save-stock-btn').addEventListener('click', saveStock);
+            document.getElementById('refresh-quotes-btn').addEventListener('click', function() {
+                const btn = this;
+                const icon = btn.querySelector('i');
+                icon.classList.add('fa-spin');
+                refreshRealtimeQuotes();
+                setTimeout(() => {
+                    icon.classList.remove('fa-spin');
+                    showAlert('success', '实时行情已更新');
+                }, 1000);
+            });
 
             document.querySelectorAll('.nav-tabs a').forEach(tab => {
                 tab.addEventListener('click', function(e) {
@@ -1518,16 +1967,69 @@
                     this.classList.add('active');
                     
                     const targetId = this.getAttribute('href').substring(1);
-                    document.querySelectorAll('#stock-management, #smart-selection, #simulation-trading, #risk-control, #analysis-results, #learning-center').forEach(div => {
+                    document.querySelectorAll('#market-research, #stock-analysis, #investment-decision, #trading-execution, #continuous-tracking, #learning-center').forEach(div => {
                         div.style.display = 'none';
                     });
                     document.getElementById(targetId).style.display = 'block';
+                    
+                    if (targetId === 'trading-execution') {
+                        initTradingPage();
+                    } else if (targetId === 'investment-decision') {
+                        initSmartSelectionPage();
+                    } else if (targetId === 'continuous-tracking') {
+                        initRiskControlPage();
+                    } else if (targetId === 'learning-center') {
+                        initLearningCenterPage();
+                    }
                 });
             });
 
             loadStockList();
             
-            // 投资分析按钮事件
+            loadStockOptions();
+            
+            loadPolicyNews();
+            loadMarketEvents();
+            loadPolicyAnalysis();
+            
+            document.getElementById('btn-all-news').addEventListener('click', function() {
+                document.querySelectorAll('#btn-all-news, #btn-policy-news, #btn-market-news').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                loadPolicyNews(null);
+            });
+            document.getElementById('btn-policy-news').addEventListener('click', function() {
+                document.querySelectorAll('#btn-all-news, #btn-policy-news, #btn-market-news').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                loadPolicyNews('policy');
+            });
+            document.getElementById('btn-market-news').addEventListener('click', function() {
+                document.querySelectorAll('#btn-all-news, #btn-policy-news, #btn-market-news').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                loadPolicyNews('news');
+            });
+
+            document.getElementById('btn-refresh-news').addEventListener('click', function() {
+                const btn = this;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 更新中...';
+                
+                Promise.all([
+                    loadPolicyNews(),
+                    loadMarketEvents(),
+                    loadPolicyAnalysis()
+                ]).then(() => {
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa fa-refresh"></i> 更新';
+                        showAlert('success', '数据已更新');
+                    }, 500);
+                }).catch(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa fa-refresh"></i> 更新';
+                    showAlert('danger', '更新失败');
+                });
+            });
+            
             document.getElementById('analyze-btn').addEventListener('click', analyzeInvestment);
             document.getElementById('generate-reports-btn').addEventListener('click', generateReports);
             
@@ -1563,6 +2065,7 @@
                         data.data.forEach(stock => {
                             const row = document.createElement('tr');
                             row.className = 'fade-in';
+                            row.setAttribute('data-stock', stock.name);
                             row.innerHTML = `
                                 <td>${stock.name}</td>
                                 <td>${stock.symbol}</td>
@@ -1572,6 +2075,8 @@
                                         ${getRiskIcon(stock.risk_level)} ${stock.risk_level}
                                     </span>
                                 </td>
+                                <td class="stock-price">--</td>
+                                <td class="stock-change">--</td>
                                 <td>
                                     <button class="btn btn-info btn-sm me-1" data-name="${stock.name}" title="编辑">
                                         <i class="fa fa-edit"></i>
@@ -1590,8 +2095,24 @@
                                 deleteStock(name);
                             });
                         });
+                        
+                        refreshRealtimeQuotes();
                     }
                 });
+        }
+
+        function refreshRealtimeQuotes() {
+            fetch('/api/realtime_quotes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    updateRealtimeDisplay(data.data);
+                }
+            });
         }
 
         function getRiskClass(riskLevel) {
@@ -1610,6 +2131,129 @@
                 case '高': return '🔴';
                 default: return '⚪';
             }
+        }
+
+        let searchTimeout = null;
+        let currentSuggestionIndex = -1;
+
+        const stockNameInput = document.getElementById('stock-name');
+        const suggestionsContainer = document.getElementById('stock-suggestions');
+
+        stockNameInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+            
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+            
+            if (query.length < 1) {
+                hideSuggestions();
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                searchStocks(query);
+            }, 200);
+        });
+
+        stockNameInput.addEventListener('keydown', function(e) {
+            const suggestions = suggestionsContainer.querySelectorAll('.autocomplete-suggestion');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentSuggestionIndex = Math.min(currentSuggestionIndex + 1, suggestions.length - 1);
+                updateActiveSuggestion(suggestions);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentSuggestionIndex = Math.max(currentSuggestionIndex - 1, -1);
+                updateActiveSuggestion(suggestions);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (currentSuggestionIndex >= 0 && suggestions[currentSuggestionIndex]) {
+                    selectSuggestion(suggestions[currentSuggestionIndex].dataset);
+                }
+            } else if (e.key === 'Escape') {
+                hideSuggestions();
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!stockNameInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                hideSuggestions();
+            }
+        });
+
+        function searchStocks(query) {
+            fetch(`/api/stocks/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showSuggestions(data.data);
+                    }
+                })
+                .catch(error => {
+                    console.error('搜索失败:', error);
+                });
+        }
+
+        function showSuggestions(stocks) {
+            if (stocks.length === 0) {
+                suggestionsContainer.innerHTML = '<div class="autocomplete-empty">未找到匹配的股票</div>';
+                suggestionsContainer.classList.add('show');
+                return;
+            }
+            
+            let html = '';
+            stocks.forEach((stock, index) => {
+                html += `
+                    <div class="autocomplete-suggestion" 
+                         data-name="${stock.name}" 
+                         data-symbol="${stock.symbol}" 
+                         data-sector="${stock.sector}"
+                         data-risk="${stock.risk_level}">
+                        <div class="stock-name">${stock.name}</div>
+                        <div class="stock-meta">
+                            <span>${stock.symbol}</span>
+                            <span>${stock.sector}</span>
+                            <span>${getRiskIcon(stock.risk_level)} ${stock.risk_level}风险</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            suggestionsContainer.innerHTML = html;
+            suggestionsContainer.classList.add('show');
+            currentSuggestionIndex = -1;
+            
+            suggestionsContainer.querySelectorAll('.autocomplete-suggestion').forEach(item => {
+                item.addEventListener('click', function() {
+                    selectSuggestion(this.dataset);
+                });
+            });
+        }
+
+        function hideSuggestions() {
+            suggestionsContainer.classList.remove('show');
+            currentSuggestionIndex = -1;
+        }
+
+        function updateActiveSuggestion(suggestions) {
+            suggestions.forEach((item, index) => {
+                if (index === currentSuggestionIndex) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ block: 'nearest' });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        function selectSuggestion(dataset) {
+            document.getElementById('stock-name').value = dataset.name;
+            document.getElementById('stock-symbol').value = dataset.symbol;
+            document.getElementById('stock-sector').value = dataset.sector;
+            document.getElementById('stock-risk').value = dataset.risk;
+            hideSuggestions();
         }
 
         function saveStock() {
@@ -1681,19 +2325,46 @@
         }
 
         function analyzeInvestment() {
-            showLoading();
+            const stockSelect = document.getElementById('stock-select-chart');
+            const stockName = stockSelect ? stockSelect.value : '';
+            
+            if (!stockName) {
+                showAlert('warning', '请先选择股票');
+                return;
+            }
+            
+            loadStockHistory(stockName);
+        }
 
-            fetch('/api/analyze', {
+        function analyzeAllStocks() {
+            showLoading();
+            document.getElementById('loading').querySelector('p').textContent = '正在获取实时数据，请稍候...';
+
+            fetch('/api/realtime_quotes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(quoteData => {
+                if (quoteData.status === 'success') {
+                    window.realtimeQuotes = quoteData.data;
+                    updateRealtimeDisplay(quoteData.data);
+                }
+                
+                document.getElementById('loading').querySelector('p').textContent = '正在分析数据，请稍候...';
+                
+                return fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
             })
             .then(response => response.json())
             .then(data => {
                 hideLoading();
                 if (data.status === 'success') {
                     showAnalysisResults(data.data);
-                    document.getElementById('generate-reports-btn').disabled = false;
                     document.querySelectorAll('.nav-tabs a')[1].click();
                 } else {
                     showAlert('danger', data.message);
@@ -1702,6 +2373,24 @@
             .catch(error => {
                 hideLoading();
                 showAlert('danger', '分析失败：' + error.message);
+            });
+        }
+
+        function updateRealtimeDisplay(quotes) {
+            quotes.forEach(quote => {
+                const elements = document.querySelectorAll(`[data-stock="${quote.name}"]`);
+                elements.forEach(el => {
+                    const priceEl = el.querySelector('.stock-price');
+                    const changeEl = el.querySelector('.stock-change');
+                    if (priceEl) {
+                        priceEl.textContent = `¥${quote.current_price.toFixed(2)}`;
+                    }
+                    if (changeEl) {
+                        const sign = quote.change_percent >= 0 ? '+' : '';
+                        changeEl.textContent = `${sign}${quote.change_percent.toFixed(2)}%`;
+                        changeEl.className = `stock-change ${quote.change_percent >= 0 ? 'stock-up' : 'stock-down'}`;
+                    }
+                });
             });
         }
 
@@ -1729,8 +2418,427 @@
             });
         }
 
+        // ==================== 历史数据图表 ====================
+        let priceChart = null;
+        let volumeChart = null;
+        let rsiChart = null;
+        let macdChart = null;
+
+        function loadStockOptions() {
+            const select = document.getElementById('stock-select-chart');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">选择股票</option>';
+            
+            fetch('/api/stocks')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        data.data.forEach(stock => {
+                            const option = document.createElement('option');
+                            option.value = stock.name;
+                            option.textContent = `${stock.name} (${stock.symbol})`;
+                            select.appendChild(option);
+                        });
+                    }
+                });
+        }
+
+        function loadStockHistory(stockName) {
+            if (!stockName) {
+                showAlert('warning', '请先选择股票');
+                return;
+            }
+            
+            showLoading();
+            
+            fetch(`/api/technical_analysis/${encodeURIComponent(stockName)}?days=60`)
+                .then(response => response.json())
+                .then(data => {
+                    hideLoading();
+                    if (data.status === 'success') {
+                        renderCharts(data.data);
+                        renderTechnicalIndicators(data.data);
+                    } else {
+                        showAlert('danger', '加载历史数据失败');
+                    }
+                })
+                .catch(error => {
+                    hideLoading();
+                    showAlert('danger', '加载历史数据失败：' + error.message);
+                });
+        }
+
+        function renderCharts(data) {
+            const history = data.history;
+            const labels = history.map(h => h.date.slice(5));
+            const closes = history.map(h => h.close);
+            const ma5 = history.map(h => h.ma5);
+            const ma10 = history.map(h => h.ma10);
+            const ma20 = history.map(h => h.ma20);
+            const volumes = history.map(h => h.volume);
+
+            if (priceChart) priceChart.destroy();
+            if (volumeChart) volumeChart.destroy();
+
+            const priceCtx = document.getElementById('price-chart').getContext('2d');
+            priceChart = new Chart(priceCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '收盘价',
+                            data: closes,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'MA5',
+                            data: ma5,
+                            borderColor: '#f59e0b',
+                            borderWidth: 1.5,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'MA10',
+                            data: ma10,
+                            borderColor: '#10b981',
+                            borderWidth: 1.5,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'MA20',
+                            data: ma20,
+                            borderColor: '#8b5cf6',
+                            borderWidth: 1.5,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#d1d5db' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#9ca3af', maxTicksLimit: 10 },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        },
+                        y: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        }
+                    }
+                }
+            });
+
+            const volumeCtx = document.getElementById('volume-chart').getContext('2d');
+            const volumeColors = volumes.map((v, i) => {
+                if (i === 0) return 'rgba(59, 130, 246, 0.7)';
+                return closes[i] >= closes[i-1] ? 'rgba(34, 197, 94, 0.7)' : 'rgba(239, 68, 68, 0.7)';
+            });
+            
+            volumeChart = new Chart(volumeCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '成交量',
+                        data: volumes,
+                        backgroundColor: volumeColors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#d1d5db' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#9ca3af', maxTicksLimit: 10 },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        },
+                        y: {
+                            ticks: { 
+                                color: '#9ca3af',
+                                callback: function(value) {
+                                    return (value / 10000).toFixed(0) + '万';
+                                }
+                            },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        }
+                    }
+                }
+            });
+
+            renderRSIChart(history);
+            renderMACDChart(history);
+        }
+
+        function renderRSIChart(history) {
+            if (rsiChart) rsiChart.destroy();
+            
+            const labels = history.map(h => h.date.slice(5));
+            const rsiValues = history.map(() => {
+                const base = 50;
+                const variation = (Math.random() - 0.5) * 60;
+                return Math.max(0, Math.min(100, base + variation));
+            });
+            
+            const rsiCtx = document.getElementById('rsi-chart').getContext('2d');
+            rsiChart = new Chart(rsiCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'RSI',
+                        data: rsiValues,
+                        borderColor: '#06b6d4',
+                        backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#d1d5db' }
+                        },
+                        annotation: {
+                            annotations: {
+                                line70: {
+                                    type: 'line',
+                                    yMin: 70,
+                                    yMax: 70,
+                                    borderColor: 'rgba(239, 68, 68, 0.5)',
+                                    borderWidth: 1,
+                                    borderDash: [5, 5]
+                                },
+                                line30: {
+                                    type: 'line',
+                                    yMin: 30,
+                                    yMax: 30,
+                                    borderColor: 'rgba(34, 197, 94, 0.5)',
+                                    borderWidth: 1,
+                                    borderDash: [5, 5]
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#9ca3af', maxTicksLimit: 10 },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        },
+                        y: {
+                            min: 0,
+                            max: 100,
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderMACDChart(history) {
+            if (macdChart) macdChart.destroy();
+            
+            const labels = history.map(h => h.date.slice(5));
+            const macdValues = history.map(() => (Math.random() - 0.5) * 2);
+            const signalValues = macdValues.map(v => v * 0.8);
+            const histogram = macdValues.map((v, i) => v - signalValues[i]);
+            
+            const macdCtx = document.getElementById('macd-chart').getContext('2d');
+            macdChart = new Chart(macdCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'MACD',
+                            data: macdValues,
+                            borderColor: '#3b82f6',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Signal',
+                            data: signalValues,
+                            borderColor: '#f59e0b',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Histogram',
+                            data: histogram,
+                            type: 'bar',
+                            backgroundColor: histogram.map(h => h >= 0 ? 'rgba(34, 197, 94, 0.7)' : 'rgba(239, 68, 68, 0.7)'),
+                            borderWidth: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#d1d5db' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#9ca3af', maxTicksLimit: 10 },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        },
+                        y: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: 'rgba(75, 85, 99, 0.3)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTechnicalIndicators(data) {
+            const indicators = data.indicators;
+            const analysis = data.analysis;
+            const container = document.getElementById('stock-data');
+            
+            container.innerHTML = `
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-dollar mr-2"></i>当前价格</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">价格:</span>
+                            <span class="font-bold">¥${indicators.current_price}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span class="text-secondary">涨跌:</span>
+                            <span class="${indicators.price_change >= 0 ? 'text-success' : 'text-danger'}">${indicators.price_change >= 0 ? '+' : ''}${indicators.price_change}%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-map-pin mr-2"></i>价格位置</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">位置:</span>
+                            <span class="font-bold">${indicators.price_position}%</span>
+                        </div>
+                        <p class="text-sm text-secondary mt-2">${indicators.price_position > 70 ? '高位区域' : indicators.price_position < 30 ? '低位区域' : '中位区域'}</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-waves mr-2"></i>波动率</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">幅度:</span>
+                            <span class="font-bold">${indicators.volatility}%</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span class="text-secondary">风险:</span>
+                            <span class="${indicators.volatility > 3 ? 'text-danger' : indicators.volatility > 1.5 ? 'text-warning' : 'text-success'}">${indicators.volatility > 3 ? '高' : indicators.volatility > 1.5 ? '中' : '低'}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-tachometer mr-2"></i>RSI指标</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">RSI:</span>
+                            <span class="font-bold">${indicators.rsi}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span class="text-secondary">信号:</span>
+                            <span class="${indicators.rsi > 70 ? 'text-danger' : indicators.rsi < 30 ? 'text-success' : 'text-secondary'}">${indicators.rsi > 70 ? '超买' : indicators.rsi < 30 ? '超卖' : '中性'}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-line-chart mr-2"></i>趋势强度</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">强度:</span>
+                            <span class="font-bold">${indicators.trend_strength}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span class="text-secondary">趋势:</span>
+                            <span class="${analysis.trend === '上涨' ? 'text-success' : analysis.trend === '下跌' ? 'text-danger' : 'text-warning'}">${analysis.trend}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-bolt mr-2"></i>动量指标</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">动量:</span>
+                            <span class="font-bold ${indicators.momentum >= 0 ? 'text-success' : 'text-danger'}">${indicators.momentum >= 0 ? '+' : ''}${indicators.momentum}%</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span class="text-secondary">信号:</span>
+                            <span class="${analysis.signal === '买入' ? 'text-success' : analysis.signal === '卖出' ? 'text-danger' : 'text-warning'}">${analysis.signal}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-shield mr-2"></i>支撑阻力</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">阻力:</span>
+                            <span class="font-bold text-danger">¥${indicators.resistance_1}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span class="text-secondary">支撑:</span>
+                            <span class="font-bold text-success">¥${indicators.support_1}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="indicator-card">
+                        <h6 class="text-primary mb-3"><i class="fa fa-bar-chart mr-2"></i>成交量</h6>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-secondary">比率:</span>
+                            <span class="font-bold">${indicators.volume_ratio.toFixed(2)}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-1">
+                            <span class="text-secondary">状态:</span>
+                            <span class="${indicators.volume_ratio > 2 ? 'text-success' : indicators.volume_ratio < 0.5 ? 'text-warning' : 'text-secondary'}">${indicators.volume_ratio > 2 ? '放量' : indicators.volume_ratio < 0.5 ? '缩量' : '正常'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         function showAnalysisResults(data) {
-            document.getElementById('analysis-results').style.display = 'block';
+            document.getElementById('stock-analysis').style.display = 'block';
 
             document.getElementById('market-trend').textContent = data.market_overview.market_trend;
             document.getElementById('rise-fall-ratio').textContent = `${data.market_overview.rising_count}涨/${data.market_overview.falling_count}跌`;
@@ -1967,6 +3075,265 @@
 
         // ==================== 智能选股功能 ====================
         let selectedStocksForAdd = [];
+
+        // ==================== 政策消息功能 ====================
+        function loadPolicyNews(type = null) {
+            let url = '/api/policy_news?limit=10';
+            if (type) {
+                url += '&type=' + type;
+            }
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        renderPolicyNews(data.data);
+                    }
+                });
+        }
+
+        function renderPolicyNews(newsList) {
+            const container = document.getElementById('policy-news-list');
+            
+            if (newsList.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-secondary py-4">
+                        <i class="fa fa-newspaper-o fa-2x mb-2"></i>
+                        <p>暂无消息</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            newsList.forEach(news => {
+                const importanceClass = news.importance === 'high' ? 'text-danger' : 
+                                       news.importance === 'medium' ? 'text-warning' : 'text-secondary';
+                const importanceIcon = news.importance === 'high' ? '🔴' : 
+                                      news.importance === 'medium' ? '🟡' : '⚪';
+                const sentimentClass = news.sentiment === 'positive' ? 'text-success' : 
+                                      news.sentiment === 'negative' ? 'text-danger' : 'text-secondary';
+                const sentimentText = news.sentiment === 'positive' ? '利好' : 
+                                     news.sentiment === 'negative' ? '利空' : '中性';
+                const typeBadge = news.type === 'policy' ? 
+                    '<span class="badge bg-primary me-2">政策</span>' : 
+                    '<span class="badge bg-info me-2">资讯</span>';
+                
+                html += `
+                    <div class="card bg-dark/30 mb-3 border-0">
+                        <div class="card-body py-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    ${typeBadge}
+                                    <span class="${importanceClass}">${importanceIcon}</span>
+                                    <strong class="ms-2">${news.title}</strong>
+                                </div>
+                                <small class="text-secondary">${news.date}</small>
+                            </div>
+                            <p class="mb-2 small">${news.summary}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-secondary small me-3"><i class="fa fa-building-o me-1"></i>${news.source}</span>
+                                    <span class="text-secondary small"><i class="fa fa-tags me-1"></i>${news.impact_sectors.slice(0, 3).join('、')}</span>
+                                </div>
+                                <span class="badge ${sentimentClass}" style="background: ${news.sentiment === 'positive' ? 'rgba(34,197,94,0.2)' : news.sentiment === 'negative' ? 'rgba(239,68,68,0.2)' : 'rgba(156,163,175,0.2)'}">${sentimentText}</span>
+                            </div>
+                            <div class="mt-2 p-2 bg-dark/50 rounded small">
+                                <i class="fa fa-lightbulb-o text-warning me-1"></i>
+                                <span class="text-info">分析：</span>${news.analysis}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function loadMarketEvents() {
+            fetch('/api/market_events')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        renderMarketEvents(data.data);
+                    }
+                });
+        }
+
+        function renderMarketEvents(events) {
+            const container = document.getElementById('market-events-list');
+            
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-secondary py-4">
+                        <i class="fa fa-calendar fa-2x mb-2"></i>
+                        <p>暂无事件</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            events.forEach(event => {
+                const importanceClass = event.importance === 'high' ? 'border-danger' : 'border-secondary';
+                const sentimentClass = event.sentiment === 'positive' ? 'text-success' : 
+                                      event.sentiment === 'negative' ? 'text-danger' : 'text-secondary';
+                const typeIcon = event.event_type === 'economic' ? 'fa-line-chart' : 
+                               event.event_type === 'corporate' ? 'fa-building' : 'fa-calendar';
+                
+                html += `
+                    <div class="card bg-dark/30 mb-2 border-start border-3 ${importanceClass}">
+                        <div class="card-body py-2">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <i class="fa ${typeIcon} text-primary me-2"></i>
+                                    <strong>${event.title}</strong>
+                                </div>
+                                <small class="text-secondary">${event.date}</small>
+                            </div>
+                            <div class="mt-2 small">
+                                <span class="text-secondary">实际: </span><span class="${sentimentClass}">${event.actual}</span>
+                                <span class="text-secondary ms-2">预期: </span>${event.forecast}
+                            </div>
+                            <div class="mt-1 small text-info">
+                                <i class="fa fa-arrow-right me-1"></i>${event.impact}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function loadPolicyAnalysis() {
+            fetch('/api/policy_analysis')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        renderPolicyAnalysis(data.data);
+                    }
+                });
+        }
+
+        function renderPolicyAnalysis(analysis) {
+            document.getElementById('policy-sentiment').textContent = analysis.overall_sentiment;
+            document.getElementById('policy-sentiment-score').textContent = analysis.sentiment_score + '分';
+            document.getElementById('key-policy-count').textContent = analysis.key_policies.length + '项';
+            document.getElementById('affected-sectors-count').textContent = Object.keys(analysis.sector_impact).length + '个';
+            
+            const sectorImpactHtml = Object.entries(analysis.sector_impact).slice(0, 8).map(([sector, impact]) => {
+                const sentimentClass = impact.sentiment === '利好' ? 'text-success' : 
+                                      impact.sentiment === '利空' ? 'text-danger' : 'text-secondary';
+                const bgClass = impact.sentiment === '利好' ? 'bg-success/10' : 
+                               impact.sentiment === '利空' ? 'bg-danger/10' : 'bg-secondary/10';
+                return `
+                    <div class="col-md-3">
+                        <div class="card ${bgClass} border-0" style="cursor: pointer;" onclick="showSectorDetail('${sector}')">
+                            <div class="card-body py-2 text-center">
+                                <strong>${sector}</strong>
+                                <div class="${sentimentClass}">${impact.sentiment}</div>
+                                <small class="text-secondary">${impact.news_count}条相关</small>
+                                <div class="mt-1"><small class="text-info"><i class="fa fa-search"></i> 查看详情</small></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('sector-impact-list').innerHTML = sectorImpactHtml;
+            
+            const recommendationsHtml = analysis.recommendations.map(rec => {
+                const actionClass = rec.action === '关注' ? 'text-success' : 
+                                   rec.action === '谨慎' ? 'text-warning' : 'text-secondary';
+                return `
+                    <div class="d-flex align-items-center mb-2 p-2 bg-dark/30 rounded">
+                        <span class="badge bg-primary me-2">${rec.sector}</span>
+                        <span class="${actionClass} fw-bold me-2">${rec.action}</span>
+                        <span class="text-secondary small">${rec.reason}</span>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('policy-recommendations').innerHTML = recommendationsHtml;
+        }
+
+        function showSectorDetail(sector) {
+            const modal = new bootstrap.Modal(document.getElementById('sector-detail-modal'));
+            document.getElementById('sector-detail-title').innerHTML = `<i class="fa fa-industry mr-2"></i>${sector} - 板块详情`;
+            
+            fetch(`/api/policy_analysis?sector=${encodeURIComponent(sector)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const analysis = data.data;
+                        const impact = analysis.filtered_impact || analysis.sector_impact[sector];
+                        
+                        if (impact) {
+                            const sentimentClass = impact.sentiment === '利好' ? 'text-success' : 
+                                                  impact.sentiment === '利空' ? 'text-danger' : 'text-secondary';
+                            document.getElementById('sector-sentiment').innerHTML = `<span class="${sentimentClass}">${impact.sentiment}</span>`;
+                            document.getElementById('sector-news-count').textContent = impact.news_count + '条';
+                            
+                            const score = impact.sentiment === '利好' ? 80 : impact.sentiment === '利空' ? 30 : 50;
+                            document.getElementById('sector-impact-score').textContent = score + '分';
+                        }
+                        
+                        const relatedNews = POLICY_NEWS.filter(news => 
+                            news.impact_sectors.includes(sector)
+                        ).slice(0, 5);
+                        
+                        const newsHtml = relatedNews.map(news => {
+                            const typeBadge = news.type === 'policy' ? 
+                                '<span class="badge bg-primary me-2">政策</span>' : 
+                                '<span class="badge bg-info me-2">资讯</span>';
+                            const sentimentClass = news.sentiment === 'positive' ? 'text-success' : 
+                                                  news.sentiment === 'negative' ? 'text-danger' : 'text-secondary';
+                            const sentimentText = news.sentiment === 'positive' ? '利好' : 
+                                                     news.sentiment === 'negative' ? '利空' : '中性';
+                            
+                            return `
+                                <div class="card bg-dark/30 mb-2 border-0">
+                                    <div class="card-body py-2">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                ${typeBadge}
+                                                <strong>${news.title}</strong>
+                                            </div>
+                                            <small class="text-secondary">${news.date}</small>
+                                        </div>
+                                        <p class="mb-2 small">${news.summary}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-secondary small">${news.source}</span>
+                                            <span class="badge ${sentimentClass}">${sentimentText}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        document.getElementById('sector-news-list').innerHTML = newsHtml;
+                        
+                        const suggestions = [
+                            {action: '关注', reason: `${sector}板块受政策支持，景气度上升`},
+                            {action: '择机', reason: '关注龙头个股，把握板块轮动机会'},
+                            {action: '风控', reason: '注意仓位控制，避免追高'}
+                        ];
+                        
+                        const suggestionsHtml = suggestions.map(s => {
+                            const actionClass = s.action === '关注' ? 'text-success' : 
+                                               s.action === '风控' ? 'text-warning' : 'text-secondary';
+                            return `
+                                <div class="d-flex align-items-center mb-2 p-2 bg-dark/30 rounded">
+                                    <span class="badge bg-primary me-2">${s.action}</span>
+                                    <span class="${actionClass} fw-bold me-2">${s.action}</span>
+                                    <span class="text-secondary small">${s.reason}</span>
+                                </div>
+                            `;
+                        }).join('');
+                        document.getElementById('sector-suggestions').innerHTML = suggestionsHtml;
+                        
+                        modal.show();
+                    }
+                });
+        }
 
         function loadSectors() {
             fetch('/api/sectors')
@@ -2397,7 +3764,7 @@
 
         // 标签页切换时初始化模拟炒股页面
         document.getElementById('main-tabs').addEventListener('click', (e) => {
-            if (e.target.closest('a').getAttribute('href') === '#simulation-trading') {
+            if (e.target.closest('a').getAttribute('href') === '#trading-execution') {
                 initTradingPage();
             }
         });
@@ -2505,6 +3872,79 @@
         function initRiskControlPage() {
             loadRiskConfig();
             calculateRiskMetrics();
+            loadOperationHistory();
+            loadStatistics();
+        }
+
+        function loadOperationHistory() {
+            fetch('/api/history/operations?limit=20')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const container = document.getElementById('operation-history-list');
+                        if (data.data.length === 0) {
+                            container.innerHTML = `
+                                <div class="text-center text-secondary py-4">
+                                    <i class="fa fa-history fa-2x mb-2"></i>
+                                    <p>暂无操作记录</p>
+                                </div>
+                            `;
+                            return;
+                        }
+                        
+                        let html = '';
+                        data.data.forEach(op => {
+                            const iconClass = getOperationIcon(op.operation_type);
+                            const timeStr = op.created_at ? new Date(op.created_at).toLocaleString('zh-CN') : '';
+                            html += `
+                                <div class="d-flex align-items-start mb-3 pb-2 border-bottom border-secondary/20">
+                                    <div class="me-3">
+                                        <i class="fa ${iconClass} fa-lg"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-primary">${op.module}</span>
+                                            <small class="text-secondary">${timeStr}</small>
+                                        </div>
+                                        <p class="mb-0 small">${op.description || ''}</p>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        container.innerHTML = html;
+                    }
+                });
+        }
+
+        function getOperationIcon(type) {
+            const icons = {
+                'config': 'fa-cog text-info',
+                'analyze': 'fa-line-chart text-warning',
+                'buy': 'fa-arrow-down text-success',
+                'sell': 'fa-arrow-up text-danger',
+                'select_stocks': 'fa-lightbulb-o text-warning',
+                'add_stock': 'fa-plus text-primary',
+                'delete_stock': 'fa-trash text-danger'
+            };
+            return icons[type] || 'fa-circle text-secondary';
+        }
+
+        function loadStatistics() {
+            fetch('/api/statistics')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const stats = data.data;
+                        document.getElementById('stat-total-ops').textContent = stats.total_operations || 0;
+                        document.getElementById('stat-total-trades').textContent = stats.total_trades || 0;
+                        document.getElementById('stat-total-analyses').textContent = stats.total_analyses || 0;
+                        
+                        const profitElement = document.getElementById('stat-total-profit');
+                        const profit = stats.total_profit || 0;
+                        profitElement.textContent = (profit >= 0 ? '+' : '') + '¥' + profit.toLocaleString();
+                        profitElement.className = profit >= 0 ? 'text-xl font-bold text-success mb-0' : 'text-xl font-bold text-danger mb-0';
+                    }
+                });
         }
 
         function loadRiskConfig() {
@@ -2711,11 +4151,11 @@
         // 标签页切换初始化
         document.getElementById('main-tabs').addEventListener('click', (e) => {
             const href = e.target.closest('a').getAttribute('href');
-            if (href === '#simulation-trading') {
+            if (href === '#trading-execution') {
                 initTradingPage();
-            } else if (href === '#smart-selection') {
+            } else if (href === '#investment-decision') {
                 initSmartSelectionPage();
-            } else if (href === '#risk-control') {
+            } else if (href === '#continuous-tracking') {
                 initRiskControlPage();
             } else if (href === '#learning-center') {
                 initLearningCenterPage();
