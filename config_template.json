@@ -1,0 +1,102 @@
+{
+  "version": "2.0",
+  "data_sources": {
+    "sina": {
+      "enabled": true,
+      "priority": 1,
+      "description": "新浪财经免费API，实时性好"
+    },
+    "eastmoney": {
+      "enabled": false,
+      "priority": 2,
+      "description": "东方财富API，需要配置"
+    },
+    "tushare": {
+      "enabled": false,
+      "priority": 3,
+      "token": "",
+      "description": "Tushare专业数据，需要token"
+    }
+  },
+  "analysis": {
+    "technical": true,
+    "fundamental": true,
+    "sentiment": true,
+    "ai_analysis": false,
+    "description": "分析模块配置"
+  },
+  "monitoring": {
+    "enabled": true,
+    "interval_minutes": 5,
+    "alert_threshold_percent": 2.0,
+    "working_hours": ["09:30", "15:00"],
+    "description": "监控配置"
+  },
+  "risk_management": {
+    "max_single_position": 20,
+    "max_sector_exposure": 40,
+    "stop_loss_default": 8,
+    "take_profit_default": 20,
+    "description": "风险管理配置"
+  },
+  "reporting": {
+    "format": ["console", "json"],
+    "save_path": "./reports",
+    "generate_charts": true,
+    "description": "报告生成配置"
+  },
+  "stocks": {
+    "default_watchlist": [
+      "300730.SZ",
+      "688480.SS",
+      "300474.SZ",
+      "300454.SZ",
+      "002230.SZ",
+      "300624.SZ",
+      "688100.SS",
+      "300036.SZ"
+    ],
+    "stock_info": {
+      "300730.SZ": {
+        "name": "科创信息",
+        "sector": "信息技术",
+        "risk_level": "中等"
+      },
+      "688480.SS": {
+        "name": "赛恩斯",
+        "sector": "环保工程",
+        "risk_level": "低"
+      },
+      "300474.SZ": {
+        "name": "景嘉微",
+        "sector": "半导体",
+        "risk_level": "高"
+      },
+      "300454.SZ": {
+        "name": "深信服",
+        "sector": "网络安全",
+        "risk_level": "高"
+      },
+      "002230.SZ": {
+        "name": "科大讯飞",
+        "sector": "人工智能",
+        "risk_level": "中等"
+      },
+      "300624.SZ": {
+        "name": "万兴科技",
+        "sector": "软件服务",
+        "risk_level": "中等"
+      },
+      "688100.SS": {
+        "name": "威胜信息",
+        "sector": "智能电网",
+        "risk_level": "低"
+      },
+      "300036.SZ": {
+        "name": "超图软件",
+        "sector": "地理信息",
+        "risk_level": "低"
+      }
+    }
+  }
+}

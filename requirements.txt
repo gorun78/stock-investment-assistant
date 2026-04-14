@@ -1,3 +1,18 @@
+# 专业股票投资辅助工具 - 依赖包
+# 基础依赖
 requests>=2.31.0
-pandas>=2.0.0  # 可选，完整版需要
-numpy>=1.24.0  # 可选，完整版需要
+aiohttp>=3.9.0
+
+# 可选依赖 - 用于高级分析
+# pandas>=2.0.0
+# numpy>=1.24.0
+# matplotlib>=3.7.0  # 用于图表生成
+
+# 专业数据源
+# tushare>=1.2.89  # 需要token，取消注释启用
+
+# AI分析
+# openai>=1.0.0  # 需要API key，取消注释启用
+
+# 安装命令: pip install -r requirements.txt
+# 最小安装: pip install requests aiohttp
